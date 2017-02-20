@@ -14,10 +14,6 @@
 		<echo>================ Run Object Main ================</echo>
 		<java classname="supportGUI.Viewer" classpath="${build}/:jars/simulator.jar" fork="true" />
 	</target>
-	<target name="debug" depends="compile" description="debug examples">
-		<echo>================ Run Object Main ================</echo>
-		<java classname="supportGUI.Viewer" classpath="${build}/:jars/simulator.jar" fork="true" />
-	</target>
 	<target name="dist" depends="init,clean" description="Generer la distribution">
 		<jar basedir="." jarfile="../simovies_${DSTAMP}.jar" />
 	</target>
