@@ -1,26 +1,32 @@
 package mypackage;
 
+import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import robotsimulator.Brain;
 import characteristics.IFrontSensorResult;
 import characteristics.Parameters;
+import robotsimulator.Brain;
 
 //@SuppressWarnings("unused")
 public class Exo1 extends Brain {
 
 	private static final double HEADINGPRECISION = 0.001;
 	private static final double ANGLEPRECISION = 0.1;
-	private static final String[] NOM_ROBOTS = { "Ash", "MOR", "KALI", "SEC1",
-			"SEC2" };
+	private static final String[] NOM_ROBOTS = { "Ash", "MOR", "KALI", "SEC1", "SEC2" };
 	private static int index = 0;
 
 	private boolean turnNorthTask, turnLeftTask;
+	public static Map<String, Exo1> robots;
+	static {
+		robots = new HashMap<>();
+	}
 
 	List<Task> tasks;
 	private double endTaskDirection;
-	private double myX, myY;
+	private Position position;
 	private boolean isMoving;
 	private String name;
 	private double mycurrentDirection;
@@ -35,7 +41,6 @@ public class Exo1 extends Brain {
 	public void step() {
 		if (isHeading(endTaskDirection)) {
 			move();
-			
 
 		} else {
 			stepTurn(Parameters.Direction.RIGHT);
@@ -45,11 +50,12 @@ public class Exo1 extends Brain {
 
 	@Override
 	public void move() {
-		double distX = Math.abs(Parameters.teamAMainBotFrontalDetectionRange - myX);
-		double distY = Math.abs(Parameters.teamAMainBotFrontalDetectionRange - myY);
+		double distX = Math.abs(Parameters.teamAMainBotFrontalDetectionRange - position.x);
+		double distY = Math.abs(Parameters.teamAMainBotFrontalDetectionRange - position.y);
+
 		if (detectFront().getObjectType() != IFrontSensorResult.Types.WALL) {
 			super.move();
-			updateCoordonnees();
+			position = Position.deplacement(position, getHeading());
 
 		} else {
 			if (!tasks.isEmpty()) {
@@ -71,6 +77,7 @@ public class Exo1 extends Brain {
 		this.isMoving = false;
 		this.name = NOM_ROBOTS[indexRobot];
 		this.endTaskDirection = Parameters.teamAMainBot1InitHeading;
+
 		tasks = new ArrayList<Task>();
 		Task tk = new Task();
 		tk.setDirection(Parameters.SOUTH);
@@ -81,32 +88,27 @@ public class Exo1 extends Brain {
 		tk = new Task();
 		tk.setDirection(Parameters.NORTH);
 		tasks.add(tk);
+
 		this.mycurrentDirection = Parameters.EAST;
 
 		switch (indexRobot) {
 		case 0:
-			this.myX = Parameters.teamAMainBot1InitX;
-			this.myY = Parameters.teamAMainBot1InitY;
+			this.position.x = Parameters.teamAMainBot1InitX;
+			this.position.y = Parameters.teamAMainBot1InitY;
 			break;
 		case 1:
-			this.myX = Parameters.teamAMainBot2InitX;
-			this.myY = Parameters.teamAMainBot2InitY;
+			this.position.x = Parameters.teamAMainBot2InitX;
+			this.position.y = Parameters.teamAMainBot2InitY;
 			break;
 		case 2:
-			this.myX = Parameters.teamAMainBot3InitX;
-			this.myY = Parameters.teamAMainBot3InitY;
+			this.position.x = Parameters.teamAMainBot3InitX;
+			this.position.y = Parameters.teamAMainBot3InitY;
 			break;
 		}
 	}
 
-	private void updateCoordonnees() {
-		myX += Parameters.teamBMainBotSpeed * Math.cos(getHeading());
-		myY += Parameters.teamBMainBotSpeed * Math.sin(getHeading());
-	}
-
 	private void logMe() {
-		sendLogMessage("#" + name + " is rolling at position (" + (int) myX
-				+ ", " + (int) myY + ").");
+		sendLogMessage("#" + name + " is rolling at position (" + position.x + ", " + position.x + ").");
 	}
 
 }
