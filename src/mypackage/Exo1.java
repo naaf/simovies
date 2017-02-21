@@ -77,6 +77,7 @@ public class Exo1 extends Brain {
 		this.isMoving = false;
 		this.name = NOM_ROBOTS[indexRobot];
 		this.endTaskDirection = Parameters.teamAMainBot1InitHeading;
+		position = new Position();
 
 		tasks = new ArrayList<Task>();
 		Task tk = new Task();
