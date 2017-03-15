@@ -27,9 +27,7 @@ public class Exo2 extends Brain {
     List<Task> tasks;
     private double endTaskDirection;
     private Position position;
-    private boolean isMoving;
     private String name;
-    private double mycurrentDirection;
 
     @Override
     public void activate() {
@@ -41,13 +39,13 @@ public class Exo2 extends Brain {
 
     @Override
     public void step() {
-	if (isHeading(endTaskDirection)) {
-	    move();
-
-	} else {
-	    stepTurn(Parameters.Direction.RIGHT);
-	}
-	logMe();
+//	if (isHeading(endTaskDirection)) {
+//	    move();
+//
+//	} else {
+//	    stepTurn(Parameters.Direction.RIGHT);
+//	}
+//	logMe();
     }
 
     @Override
@@ -55,9 +53,9 @@ public class Exo2 extends Brain {
 	double distX = Math.abs(Parametrage.WIDTH - Position.deplacement(position, getHeading() ).x);
 	double distY = Math.abs(Parametrage.HEIGHT - Position.deplacement(position, getHeading() ).y);
 //
-//	if ((isSameDirection(getHeading(),Parameters.EAST) && distX > Parameters.teamAMainBotRadius ) || (isSameDirection(getHeading(),Parameters.SOUTH) && distY > Parameters.teamAMainBotRadius )
-//		|| (isSameDirection(getHeading(),Parameters.WEST) && distX > Parameters.teamAMainBotRadius )) {
-	if (detectFront().getObjectType() != IFrontSensorResult.Types.WALL) {
+	if ((isSameDirection(getHeading(),Parameters.EAST) && distX > Parameters.teamAMainBotRadius ) || (isSameDirection(getHeading(),Parameters.SOUTH) && distY > Parameters.teamAMainBotRadius )
+		|| (isSameDirection(getHeading(),Parameters.WEST) && distX > Parameters.teamAMainBotRadius )) {
+	//if (detectFront().getObjectType() != IFrontSensorResult.Types.WALL) {
 		
 	    if (!interCollision()) {
 			super.move();
@@ -67,7 +65,7 @@ public class Exo2 extends Brain {
 	    }
 	}
 	else {
-		System.out.println("direction " + getHeading());
+//		System.out.println("direction " + getHeading());
 		if(isSameDirection(getHeading(),Parameters.WEST)) System.out.println( "min x => " + (position.x - Parameters.teamAMainBotFrontalDetectionRange));
 		if(isSameDirection(getHeading(),Parameters.EAST)) System.out.println( "max x => " + (position.x + Parameters.teamAMainBotFrontalDetectionRange));
 		if(isSameDirection(getHeading(),Parameters.NORTH))System.out.println( "min y => " + (position.y - Parameters.teamAMainBotFrontalDetectionRange));
@@ -102,7 +100,6 @@ public class Exo2 extends Brain {
     }
 
     private void init(int indexRobot) {
-	this.isMoving = false;
 	this.name = NOM_ROBOTS[indexRobot];
 	this.endTaskDirection = Parameters.teamAMainBot1InitHeading;
 	position = new Position();
@@ -121,7 +118,6 @@ public class Exo2 extends Brain {
 	tk.setDirection(Parameters.EAST);
 	tasks.add(tk);
 
-	this.mycurrentDirection = Parameters.EAST;
 
 	switch (indexRobot) {
 	case 0:

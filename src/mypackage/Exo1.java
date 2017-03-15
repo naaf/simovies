@@ -41,13 +41,13 @@ public class Exo1 extends Brain {
 
     @Override
     public void step() {
-	if (isHeading(endTaskDirection)) {
-	    move();
-
-	} else {
-	    stepTurn(Parameters.Direction.RIGHT);
-	}
-	logMe();
+//	if (isHeading(endTaskDirection)) {
+//	    move();
+//
+//	} else {
+//	    stepTurn(Parameters.Direction.RIGHT);
+//	}
+//	logMe();
     }
 
     @Override
